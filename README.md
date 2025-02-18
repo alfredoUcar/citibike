@@ -46,3 +46,27 @@ First thoughts and TODOs:
   - Assumption: since there are no restrictions, I can take advantage of this ambiguity and postpone this decision until later and use the option that is most convenient.
 - Is the system expected to handle concurrency and fault tolerance under high load situations?
   - Assumption: As per "questions to resolve" high load is part of theorical scenarios but not expected in practice.
+
+
+## 2) Datasets analysis
+
+I assume that datasets filenames indicate the year and some of them also the month of the data they contain. I downloaded a couples of files to confirm this assumption.
+
+Noticed there are data from June 2013 to January 2025 distributed in different files. There are three types of datasets by filename pattern available to download as zip files:
+1. `YYYY-citibike-tripdata.zip` (with full year data from 2013* to 2023)
+   1.  *checking dataset content 2013 is not a full year. It contains data from June to December.
+2. `YYYYMM-citibike-tripdata.zip` (with monthly data from 2024-01 to 2025-01)
+3. `JC-YYYYMM-citibike-tripdata.csv.zip` (with monthly data from 2015-09 to 2025-01)
+
+Datasets of type 2 and 3 overlap in time. Comparing January 2024 datasets seems that JC contain less data than the other. I will prioritize dataset 2 over 3.
+
+Given that API must handle Year(mandatory) and Month(Optional) as query parameters I will apply the following strategy to select which dataset to download:
+
+- if only year is provided and less than 2024 I will download the file `YYYY-citibike-tripdata.zip` of dataset 1.
+- if only year is provided and greater than 2023 I will download all files from dataset 2 matching the year.
+- if month is also provided:
+  - if year is 2024 or 2025-01 I will download the file `YYYYMM-citibike-tripdata.zip` of dataset 2.
+  - if year is between 2015-09 and 2023 I will download the file `JC-YYYYMM-citibike-tripdata.csv.zip` of dataset 3.
+  - if it's before 2015-09 I will download the file `YYYY-citibike-tripdata.zip` of dataset 1 that matches the year. **Considerations**: it will include more data than needed but it's the only option available. As a second iteration I could filter the data to return only the requested month.
+  - if it's before 2013 or after 2025-01 I will return an error message.
+

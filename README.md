@@ -70,3 +70,22 @@ Given that API must handle Year(mandatory) and Month(Optional) as query paramete
   - if it's before 2015-09 I will download the file `YYYY-citibike-tripdata.zip` of dataset 1 that matches the year. **Considerations**: it will include more data than needed but it's the only option available. As a second iteration I could filter the data to return only the requested month.
   - if it's before 2013 or after 2025-01 I will return an error message.
 
+
+## 3) Initial backend setup
+
+Prepare backend folder structure and setup FastAPI project using Docker. Just a simple "Hello World" for now.
+
+```
+/project-root
+│── /backend
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│── docker-compose.yml
+│── Makefile
+│── README.md
+```
+
+I will use docker-compose so I can easily add the frontend service later.
+
+At this point I'm able tu run the backend service by running `make up` and access it at `http://localhost:8000/`

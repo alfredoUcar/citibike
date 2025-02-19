@@ -157,3 +157,41 @@ Initially I will return a simple message with the requested parameters as a plac
 
 The first logic I would implement is to check if date is out of range and return an error message. The reason is that it's easier to test because I don't need to download the files to check if the logic is working and it's a good practice to handle errors first.
 
+## 7) Proof of Concept, download a file
+
+During the development I take a moment to test a simple download without any logic to check if it's working.
+
+Regardless of parameters I will download the file `2013-citibike-tripdata.zip` to test the download. The point is to check if it starts downloading the file when I access the route.
+
+Added something like this to the route:
+
+```python
+    file_url = "https://s3.amazonaws.com/tripdata/2013-citibike-tripdata.zip"
+
+    response = requests.get(file_url, stream=True)
+    if response.status_code == 200:
+        with open(filepath, "wb") as file:
+            shutil.copyfileobj(response.raw, file)
+
+        return FileResponse(filepath, filename=filename, media_type="application/zip")
+```
+
+Tested it with largest files and even it worked I noticed that it's not a good idea to download the file to the server before sending it to the client. It takes too much time before the download starts and it's not a good practice to store files on the server that are not needed. It's better to stream the file directly from the source to the client.
+
+## 8) Streaming file to client
+
+Let's iterate the previous test to see if I can stream the file directly to the client.
+
+```python
+    file_url = "https://s3.amazonaws.com/tripdata/2013-citibike-tripdata.zip"
+
+    response = requests.get(file_url, stream=True)
+    if response.status_code == 200:
+        return StreamingResponse(response.iter_content(chunk_size=1024), media_type="application/zip", headers={"Content-Disposition": f"attachment; filename={filename}"})
+```
+
+It works fine so I will keep this approach.
+
+## 9) Download the right file
+
+Now I will resume the step 6 and use TDD to implement the logic to download the right file based on the query parameters.

@@ -24,10 +24,10 @@ shell:
 	docker-compose run --rm backend bash
 
 test:
-	docker-compose run --rm backend pytest --cov=app --cov-report=term tests/
+	docker-compose run --rm backend pytest --cov=. --cov-report=term tests/
 
 coverage:
-	docker-compose run --rm backend pytest --cov=app --cov-report=html tests/
+	docker-compose run --rm backend pytest --cov=. --cov-report=html tests/
 
 clean:
 	rm -rf backend/htmlcov

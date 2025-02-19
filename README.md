@@ -1,5 +1,51 @@
 Full stack code challenge. The task is described in the `.pdf` file at the root of the repository.
 
+# Usage
+
+## Requirements
+
+- Docker
+- Docker Compose
+
+## Running the project
+
+### Start the API
+
+```bash
+make up
+```
+
+API is available at `http://localhost:8000/` and swagger documentation at `http://localhost:8000/docs`
+
+### Stop the API
+
+```bash
+make down
+```
+
+### Check coverage
+
+Generate html report
+
+```bash
+make coverage
+```
+
+change `backend/htmlcov/` permissions to access the report without root:
+
+```bash
+sudo chown -R $USER backend/htmlcov/
+```
+
+> Note: this is needed because docker creates the files with root permissions by default.
+
+open report in browser
+
+```bash
+xdg-open backend/htmlcov/index.html
+```
+
+
 # Approach step by step
 
 ## 1) Understand the problem
@@ -14,7 +60,7 @@ First thoughts and TODOs:
 - Backend and frontend should be developed.
   - Since FastAPI is mandatory for backend I'will probably discard fullstack monorepo approach and use Headless like architecture.
 - Tool must run both on reviewer's machine and production environment.
-  - Seems like a containerized solution is a good choice. I will use Docker.
+  - A containerized solution might be a good choice. I will use Docker.
 - Code quality is important.
   - I will use a linter and a formatter that make me easier to follow standards such as PEP8 rules and pythonic code.
     - TODO: setup linter and formatter.
@@ -89,3 +135,25 @@ Prepare backend folder structure and setup FastAPI project using Docker. Just a 
 I will use docker-compose so I can easily add the frontend service later.
 
 At this point I'm able tu run the backend service by running `make up` and access it at `http://localhost:8000/`
+
+## 4) Setup linter and formatter
+
+Setup commands `make lint`,`make lint-fix` and `make format` to run linter and formatter with ruff and black.
+
+## 5) Setup testing tools
+
+Install `pytest` and `pytest-cov` to run tests and coverage.
+Setup commands `make test` whith coverage as text output and `make coverage` to generate coverage html report.
+
+Coverage report is available at `backend/htmlcov/index.html` but it's only accesible as root user because docker creates the files with root permissions. I will consider to fix this later.
+
+## 6) TDD for API
+
+Started developing API functionality in a TDD way. Incrementally adding tests and code based on strategy defined in step 2.
+
+The plan is to create a route `/download` that receives `year` and `month` as query parameters and returns a file with the requested data.
+
+Initially I will return a simple message with the requested parameters as a placeholder before implementing the download logic.
+
+The first logic I would implement is to check if date is out of range and return an error message. The reason is that it's easier to test because I don't need to download the files to check if the logic is working and it's a good practice to handle errors first.
+

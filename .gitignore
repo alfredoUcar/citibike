@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.vscode/
+
+.ruff_cache/
+
+# Ignore coverage files
+.coverage
+coverage.xml
+htmlcov/
+*.coveragerc

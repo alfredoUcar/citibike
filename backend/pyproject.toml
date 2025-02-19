@@ -1,0 +1,12 @@
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+# Configuración de reglas específicas
+select = ["E", "F", "I"]  # Errores, fallos y orden de imports
+ignore = ["E501"]  # Ignorar líneas demasiado largas (Black se encarga)
+
+[tool.black]
+line-length = 88
+target-version = ['py310']

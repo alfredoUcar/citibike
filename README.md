@@ -195,3 +195,8 @@ It works fine so I will keep this approach.
 ## 9) Download the right file
 
 Now I will resume the step 6 and use TDD to implement the logic to download the right file based on the query parameters.
+
+## 10) Model to handle params validation
+
+Refactor to extract params validation to a pydantic model and keep endpoint code cleaner (single responsability).
+

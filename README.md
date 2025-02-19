@@ -200,3 +200,8 @@ Now I will resume the step 6 and use TDD to implement the logic to download the 
 
 Refactor to extract params validation to a pydantic model and keep endpoint code cleaner (single responsability).
 
+## 11) Service to resolve dataset url
+
+Although I had not yet written all the logic, I saw that the endpoint was getting long and had too many responsibilities. So I have also moved to a service the responsibility of calculating which url to use.
+
+This way the endpoint only has to execute the download

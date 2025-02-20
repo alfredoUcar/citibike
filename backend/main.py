@@ -20,7 +20,10 @@ def read_root():
 def download_data(params: DatasetRequest = Depends()):
     """Downloads the dataset according to the specified year and month."""
 
-    file_url = DatasetUrlService(params.year, params.month).get_url()
+    try:
+        file_url = DatasetUrlService(params.year, params.month).get_url()
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
     response = requests.get(file_url, stream=True)
     if response.status_code != 200:

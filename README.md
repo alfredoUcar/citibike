@@ -256,3 +256,9 @@ Checked config by running `make up` then `docker compose ps` to ensure both serv
 Created a simple form that calls a frontend service which requests data to backend API.
 Had to config CORS in backend so it allows requests from frontend (localhost:3000). That only works in development. It should adjusted for production.
 
+## 16) Progress bar
+
+Download works fine but there's no visual feedback during the download. After that it finally shows the dialog to save it on your device but it takes a minute before that.
+
+Let's use Axios `onDownloadProgress` option to get updates so UI can be updated.
+To make it work I had to specify Content-Length on response headers in backend.

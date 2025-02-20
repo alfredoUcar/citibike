@@ -1,66 +1,54 @@
 "use client";
-
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { getDataset } from "@/services/datasetService";
+import { getDataset } from "../services/datasetService";
 
-type FormData = {
-  year: string;
-  month?: string;
-};
+export default function DownloadDataset() {
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [progress, setProgress] = useState<number | null>(null);
 
-const Form = () => {
-  const { register, handleSubmit } = useForm<FormData>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const onSubmit = async (data: FormData) => {
-    setLoading(true);
-    setError("");
-
-    try {
-      await getDataset(data.year, data.month);
-    } catch (e) {
-      console.error(e);
-      setError("Error downloading dataset");
-    } finally {
-      setLoading(false);
-    }
+  const handleDownload = async () => {
+    setProgress(0); // Show progress bar
+    await getDataset(year, month, (p) => setProgress(p));
+    setProgress(null); // Hide progress bar after completion
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
-        CitiBike dataset
+    <div className="p-6 bg-white shadow-md rounded-lg max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-gray-600">
+        Download Dataset
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block text-gray-600">Year*</label>
-          <input
-            type="number"
-            {...register("year", { required: true })}
-            className="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-600"
-          />
+      <input
+        type="text"
+        placeholder="Year"
+        value={year}
+        onChange={(e) => setYear(e.target.value)}
+        className="border p-2 rounded w-full mb-2 text-gray-600"
+      />
+      <input
+        type="text"
+        placeholder="Month (optional)"
+        value={month}
+        onChange={(e) => setMonth(e.target.value)}
+        className="border p-2 rounded w-full mb-4 text-gray-600"
+      />
+      <button
+        onClick={handleDownload}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"
+      >
+        Download
+      </button>
+      {progress !== null && (
+        <div className="mt-4">
+          <p className="text-sm text-gray-600">Downloading... {progress}%</p>
+          <div className="w-full bg-gray-200 h-2 rounded mt-1">
+            <div
+              className="bg-blue-500 h-2 rounded"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-gray-600">Month</label>
-          <input
-            type="number"
-            {...register("month")}
-            className="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-600"
-          />
-        </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition-all"
-          disabled={loading}
-        >
-          {loading ? "Downloading..." : "Download"}
-        </button>
-      </form>
+      )}
     </div>
   );
-};
-
-export default Form;
+}

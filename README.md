@@ -205,3 +205,40 @@ Refactor to extract params validation to a pydantic model and keep endpoint code
 Although I had not yet written all the logic, I saw that the endpoint was getting long and had too many responsibilities. So I have also moved to a service the responsibility of calculating which url to use.
 
 This way the endpoint only has to execute the download
+
+## 12) Last case
+
+At this point I have already solved almost all the cases.
+
+Let's summarize what we have so far:
+
+An endpoint `GET /dataset/` which does the following:
+
+- Delegates to the model that the range of requests is between 2013 and 2025 (with or without month)
+
+- Runs a service that tells me the url of the dataset that I have to download according to the strategy that I defined in step 2, except for one exception*.
+
+- Proceeds with the streaming download.
+
+*The only case that I have not resolved yet is when the full year 2024 is requested. It is special because it is the only case where I have to download more than one file at a time, that is why I left it for last.
+
+
+## 13) Partially solved
+
+Adapted url resolver to return a list of urls and instead of a single url. This way I can handle also requests for full year 2024.
+In that case it return 12 urls, one for each month.
+
+Adapted route controller to add another handler in case of multiple urls that downloads all of them into a single zip file.
+The problem is it fails before finish while debug logs show that it fails after download the first 4-5 individual files, even with streaming approach.
+
+Error log:
+
+```bash
+backend_1  |     | requests.exceptions.ConnectionError: HTTPSConnectionPool(host='s3.amazonaws.com', port=443): Max retries exceeded with url: /tripdata/202404-citibike-tripdata.csv.zip (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ff503dc0640>: Failed to resolve 's3.amazonaws.com' ([Errno -5] No address associated with hostname)"))
+```
+
+Probably I'm getting banned due to a rate limit.
+
+As an experiment if a test to limit download up to the first 4 files only it works fine. Takes more time than in other cases but downloads finish successfully and data is correct.
+
+I'm considering to apply delays between requests or use a session to reuse connections. Anyway I'will park it here in order to advance with frontend part. This will remain as a TODO for later.

@@ -269,4 +269,36 @@ Make inputs selectors.
 
 ![alt text](image.png)
 
----
+
+# Pending work and final thoughts
+
+
+In addition to the optional bonus, which I haven't done, I think there are some improvements that would have been interesting.
+
+This is what I would have prioritized if I had spent more time on it:
+
+- Better configure the "linter" and testing tools on the front. Tests on the front and a little more coverage on the backend.
+
+- Better process the data for the year 2024, when the entire year is downloaded it fails halfway through the process.
+
+- Filter the search by month when the request is prior to 2015-09, since in these cases I download the entire year.
+
+- Set up the build of a production-optimized docker image (no test code or development dependencies). I probably would have used "service profiles"
+
+- Once everything was well covered by test I would have refactored the code to make it cleaner.
+
+# Questions to resolve (theorical part)
+
+## Scalability  
+- **Caching with Redis**: could be used for most demanded datasets.  
+- **Load balancing with Nginx**: Spreads traffic across multiple FastAPI instances.  
+- **Message queues (RabbitMQ or Kafka)**: Handles asynchronous requests efficiently.
+- **Microservice**: Expensive processes such as filtering or merging datasets could be consumed from the asynchronous queue and processed by a microservice that has more resources or that uses some more specialized technology for that task.
+
+## Monitoring  
+- **Prometheus + Grafana**: Tracks API latency and errors.  
+- **Structured logs**: Using tools like the ELK Stack for better visibility.  
+
+# Security (Authentication)  
+
+I would use **JWT (JSON Web Tokens)**. It's simple and stateless, no need to store sessions.

@@ -19,14 +19,19 @@ class DatasetUrlService:
                 return [f"{base_url}/{filename}"]
             else:  # 2024
                 return [
-                    f"{base_url}/{self.year}{month:02d}-citibike-tripdata.csv.zip"
+                    f"{base_url}/{self.year}{month:02d}-citibike-tripdata.csv.zip" 
+                    if month <= 4 
+                    else f"{base_url}/{self.year}{month:02d}-citibike-tripdata.zip"
                     for month in range(1, 13)
                 ]
 
         # month provided
         formatted_month = "{:02d}".format(self.month)
         if self.year > 2023:
-            filename = f"{self.year}{formatted_month}-citibike-tripdata.csv.zip"
+            if self.month <= 4:
+                filename = f"{self.year}{formatted_month}-citibike-tripdata.csv.zip"
+            else:
+                filename = f"{self.year}{formatted_month}-citibike-tripdata.zip"
             return [f"{base_url}/{filename}"]
 
         if (

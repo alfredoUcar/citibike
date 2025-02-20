@@ -69,7 +69,13 @@ def test_2024_without_month_uses_all_months_files():
     assert len(urls) == 12
     for month in range(1, 12):
         formatted_month = "{:02d}".format(month)  # MM format
-        assert (
-            urls[month - 1]
-            == f"https://s3.amazonaws.com/tripdata/2024{formatted_month}-citibike-tripdata.csv.zip"
-        )
+        if (month < 5):
+            assert (
+                urls[month - 1]
+                == f"https://s3.amazonaws.com/tripdata/2024{formatted_month}-citibike-tripdata.csv.zip"
+            )
+        else:
+            assert (
+                urls[month - 1]
+                == f"https://s3.amazonaws.com/tripdata/2024{formatted_month}-citibike-tripdata.zip"
+            )

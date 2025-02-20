@@ -242,3 +242,15 @@ Probably I'm getting banned due to a rate limit.
 As an experiment if a test to limit download up to the first 4 files only it works fine. Takes more time than in other cases but downloads finish successfully and data is correct.
 
 I'm considering to apply delays between requests or use a session to reuse connections. Anyway I'will park it here in order to advance with frontend part. This will remain as a TODO for later.
+
+## 14) Setup frontend
+
+Let's init a next.js project in `frontend/` dir. I know it's fullstack framework and might be more than needed but it's easy to use, include lots of useful presets such as linters or tailwind. Also I have experience with it and prefer to go with something familiar.
+
+Add Dockerfile and update `docker-compose.yml` to add frontend service.
+
+Checked config by running `make up` then `docker compose ps` to ensure both services are up and running. Finally open `localhost:3000` to see the next.js default homepage.
+
+## 15) Customize with dataset form
+
+

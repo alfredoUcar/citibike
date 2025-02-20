@@ -60,7 +60,7 @@ def test_uses_JC_YYYYMM_files_when_month_provided_and_year_between_2015_09_and_2
 ):
     formatted_month = "{:02d}".format(month)  # MM format
     url_service = DatasetUrlService(year, month)
-    expected_url = f"https://s3.amazonaws.com/tripdata/JC-{year}{formatted_month}-citibike-tripdata.zip"
+    expected_url = f"https://s3.amazonaws.com/tripdata/JC-{year}{formatted_month}-citibike-tripdata.csv.zip"
     assert url_service.get_urls()[0] == expected_url
 
 

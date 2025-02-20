@@ -32,7 +32,7 @@ class DatasetUrlService:
         if (
             self.year > 2015 or self.year == 2015 and self.month >= 9
         ):  # after 2015-09 inclusive
-            filename = f"JC-{self.year}{formatted_month}-citibike-tripdata.zip"
+            filename = f"JC-{self.year}{formatted_month}-citibike-tripdata.csv.zip"
             return [f"{base_url}/{filename}"]
 
         if self.year < 2015 or self.year == 2015 and self.month < 9:  # before 2015-09

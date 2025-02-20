@@ -262,3 +262,11 @@ Download works fine but there's no visual feedback during the download. After th
 
 Let's use Axios `onDownloadProgress` option to get updates so UI can be updated.
 To make it work I had to specify Content-Length on response headers in backend.
+
+## 17) Improve UI
+
+Make inputs selectors.
+
+![alt text](image.png)
+
+---

@@ -253,4 +253,6 @@ Checked config by running `make up` then `docker compose ps` to ensure both serv
 
 ## 15) Customize with dataset form
 
+Created a simple form that calls a frontend service which requests data to backend API.
+Had to config CORS in backend so it allows requests from frontend (localhost:3000). That only works in development. It should adjusted for production.
 

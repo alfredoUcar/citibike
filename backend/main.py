@@ -4,6 +4,7 @@ import zipfile
 import requests
 from fastapi import APIRouter, Depends, FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from logger import logger
 from models.dataset_request import DatasetRequest
@@ -11,6 +12,15 @@ from services.dataset_url import DatasetUrlService
 
 app = FastAPI()
 router = APIRouter()
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # allow frontend requests in dev
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 CHUNK_SIZE = 8192  # 8 KB per chunk
 

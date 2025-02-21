@@ -9,7 +9,7 @@ Full stack code challenge. The task is described in the `.pdf` file at the root 
 
 ## Running the project
 
-### Start the API
+### Start the APP
 
 ```bash
 make up
@@ -17,7 +17,9 @@ make up
 
 API is available at `http://localhost:8000/` and swagger documentation at `http://localhost:8000/docs`
 
-### Stop the API
+Front is served at `http://localhost:3000`
+
+### Stop the APP
 
 ```bash
 make down
